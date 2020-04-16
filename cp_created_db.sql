@@ -1,136 +1,147 @@
--- Описание проекта GeekBrains.
+-- РћРїРёСЃР°РЅРёРµ РїСЂРѕРµРєС‚Р° GeekBrains.
 
 CREATE DATABASE geekbrains;
 
 USE geekbrains;
 
--- faculty таблица хронящая в себе все программы обучения (справочник)
-
-CREATE TABLE faculty (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, -- идентификатор факультета/профессии
-	name_faculty VARCHAR (255) UNIQUE, -- название факультета/профессии
-	descrition_faculty_id INT UNSIGNED NOT NULL, -- ссылка на документ описание факультета/профессии (media)
-	icon_faculty_id INT UNSIGNED NOT NULL -- ссылка на логотип факультета/профессии (media)
-	)
+-- faculties С‚Р°Р±Р»РёС†Р° С…СЂР°РЅСЏС‰Р°СЏ РІ СЃРµР±Рµ РІСЃРµ РїСЂРѕРіСЂР°РјРјС‹ РѕР±СѓС‡РµРЅРёСЏ (СЃРїСЂР°РІРѕС‡РЅРёРє)
+drop table faculties;
+CREATE TABLE `faculties` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,  -- РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С„Р°РєСѓР»СЊС‚РµС‚Р°/РїСЂРѕС„РµСЃСЃРёРё
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL, -- РЅР°Р·РІР°РЅРёРµ С„Р°РєСѓР»СЊС‚РµС‚Р°/РїСЂРѕС„РµСЃСЃРёРё
+  `description_id` int(10) unsigned NOT NULL, -- СЃСЃС‹Р»РєР° РЅР° РґРѕРєСѓРјРµРЅС‚ РѕРїРёСЃР°РЅРёРµ С„Р°РєСѓР»СЊС‚РµС‚Р°/РїСЂРѕС„РµСЃСЃРёРё (media)
+  `icon_id` int(10) unsigned NOT NULL,-- СЃСЃС‹Р»РєР° РЅР° Р»РѕРіРѕС‚РёРї С„Р°РєСѓР»СЊС‚РµС‚Р°/РїСЂРѕС„РµСЃСЃРёРё (media)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 	
--- course в этой таблице хранятся все курсы которые имеются на сервисе
+-- courses РІ СЌС‚РѕР№ С‚Р°Р±Р»РёС†Рµ С…СЂР°РЅСЏС‚СЃСЏ РІСЃРµ РєСѓСЂСЃС‹ РєРѕС‚РѕСЂС‹Рµ РёРјРµСЋС‚СЃСЏ РЅР° СЃРµСЂРІРёСЃРµ
 
-CREATE TABLE course (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, -- идентификатор курса
-	faculty_id INT UNSIGNED NOT NULL, -- к какому факультету или профессии привязан курс
-	name VARCHAR (255) UNIQUE, --  название курса
-	description_course_id INT UNSIGNED NOT NULL, -- ссылка на документ описание курса (media)
-	teacher_id INT UNSIGNED NOT NULL, -- ссылка на профиль преподователя курса
-	visibility ENUM ('Y','N'), -- видимость курса для пользователей (случай внедрения или приостановки курса)
-	icon_course_id INT UNSIGNED NOT NULL -- ссылка на логотип курса (media)
-	)
-	 
+CREATE TABLE `courses` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,  -- РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РєСѓСЂСЃР°
+  `faculty_id` int(10) unsigned NOT NULL, -- Рє РєР°РєРѕРјСѓ С„Р°РєСѓР»СЊС‚РµС‚Сѓ РёР»Рё РїСЂРѕС„РµСЃСЃРёРё РїСЂРёРІСЏР·Р°РЅ РєСѓСЂСЃ
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL, --  РЅР°Р·РІР°РЅРёРµ РєСѓСЂСЃР°
+  `description_id` int(10) unsigned NOT NULL, -- СЃСЃС‹Р»РєР° РЅР° РґРѕРєСѓРјРµРЅС‚ РѕРїРёСЃР°РЅРёРµ РєСѓСЂСЃР° (media)
+  `teacher_id` int(10) unsigned NOT NULL, -- СЃСЃС‹Р»РєР° РЅР° РїСЂРѕС„РёР»СЊ РїСЂРµРїРѕРґРѕРІР°С‚РµР»СЏ РєСѓСЂСЃР°
+  `visibility` boolean default false, -- РІРёРґРёРјРѕСЃС‚СЊ РєСѓСЂСЃР° РґР»СЏ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ (СЃР»СѓС‡Р°Р№ РІРЅРµРґСЂРµРЅРёСЏ РёР»Рё РїСЂРёРѕСЃС‚Р°РЅРѕРІРєРё РєСѓСЂСЃР°)
+  `icon_id` int(10) unsigned NOT NULL, -- СЃСЃС‹Р»РєР° РЅР° Р»РѕРіРѕС‚РёРї РєСѓСЂСЃР° (media)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- программа обучения каждой профессии или факультета
+-- РїСЂРѕРіСЂР°РјРјР° РѕР±СѓС‡РµРЅРёСЏ РєР°Р¶РґРѕР№ РїСЂРѕС„РµСЃСЃРёРё РёР»Рё С„Р°РєСѓР»СЊС‚РµС‚Р°
 
-CREATE TABLE groups_gb (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, -- индентификатор группы
-	course_id INT UNSIGNED NOT NULL, -- идентификатор курса обучения
-	curator_id INT UNSIGNED NOT NULL, -- ссылка на куратора группы
-	created_at DATETIME DEFAULT NOW(), -- время создания группы
-	start_at DATE -- старт обучения
-	)
+CREATE TABLE `groups_gb` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,  -- РёРЅРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РіСЂСѓРїРїС‹
+  `course_id` int(10) unsigned NOT NULL, -- РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РєСѓСЂСЃР° РѕР±СѓС‡РµРЅРёСЏ
+  `curator_id` int(10) unsigned NOT NULL, -- СЃСЃС‹Р»РєР° РЅР° РєСѓСЂР°С‚РѕСЂР° РіСЂСѓРїРїС‹
+  `created_at` datetime DEFAULT current_timestamp(), -- РІСЂРµРјСЏ СЃРѕР·РґР°РЅРёСЏ РіСЂСѓРїРїС‹
+  `start_at` date DEFAULT NULL, -- СЃС‚Р°СЂС‚ РѕР±СѓС‡РµРЅРёСЏ
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- уроки всех курсов
+-- СѓСЂРѕРєРё РІСЃРµС… РєСѓСЂСЃРѕРІ
 
-CREATE TABLE lesson (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, 
-	course_id INT UNSIGNED NOT NULL, -- ссылка на курс
-	video_id INT UNSIGNED NOT NULL, -- ссылка на видео урок (media)
-	description_id INT UNSIGNED NOT NULL, -- ссылка на описание инструкции прикрепленные к уроку (media)
-	doc_id INT UNSIGNED NOT NULL, -- ссылка на методичку (media)
-	start_at DATETIME DEFAULT NULL, -- старт урока
-	time_lesson INT NOT NULL -- время на сдачу задания в днях (сутках)
-	)
+CREATE TABLE `lessons` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT, 
+  `course_id` int(10) unsigned NOT NULL,  -- СЃСЃС‹Р»РєР° РЅР° РєСѓСЂСЃ
+  `video_id` int(10) unsigned NOT NULL, -- СЃСЃС‹Р»РєР° РЅР° РІРёРґРµРѕ СѓСЂРѕРє (media)
+  `description_id` int(10) unsigned NOT NULL, -- СЃСЃС‹Р»РєР° РЅР° РѕРїРёСЃР°РЅРёРµ РёРЅСЃС‚СЂСѓРєС†РёРё РїСЂРёРєСЂРµРїР»РµРЅРЅС‹Рµ Рє СѓСЂРѕРєСѓ (media)
+  `doc_id` int(10) unsigned NOT NULL, -- СЃСЃС‹Р»РєР° РЅР° РјРµС‚РѕРґРёС‡РєСѓ (media)
+  `start_at` datetime DEFAULT NULL, -- СЃС‚Р°СЂС‚ СѓСЂРѕРєР°
+  `time_lesson` int(11) NOT NULL, -- РІСЂРµРјСЏ РЅР° СЃРґР°С‡Сѓ Р·Р°РґР°РЅРёСЏ РІ РґРЅСЏС… (СЃСѓС‚РєР°С…)
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=251 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- все пользователи проекта
+-- РІСЃРµ РїРѕР»СЊР·РѕРІР°С‚РµР»Рё РїСЂРѕРµРєС‚Р°
 
-CREATE TABLE users (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	first_name VARCHAR (255), -- имя
-	last_name VARCHAR (255), -- фамилия
-	patronymic VARCHAR (255), -- отчество
-	town VARCHAR (255), -- город проживания
-	country VARCHAR (255), -- страна проживания
-	email VARCHAR (255), -- электронный адрес
-	birthday DATE, -- день рождения
-	phone INT UNSIGNED NOT NULL, -- номер телефона
-	gender ENUM ('M','W'), -- пол
-	status ENUM ('ticher','student', 'curator'),  /* статус пользователя :
-	                                            учитель, ученик, куратор группы */
-	groups_gb_id INT UNSIGNED NOT NULL, -- ссылка на группу в которой учится пользователь (если он студент)
-	photo_id INT UNSIGNED NOT NULL, -- ссылка на фото пользователя (media)
-	created_at DATETIME DEFAULT NOW(), -- когда создана учетная запись
-	update_at DATETIME DEFAULT NOW() ON UPDATE NOW(), -- последнее изменение данных пользователя
-	last_visit DATETIME DEFAULT NULL -- последний визит пользователя
-	)
+CREATE TABLE `users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,  -- РёРјСЏ
+  `last_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,  -- С„Р°РјРёР»РёСЏ
+  `patronymic` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,  -- РѕС‚С‡РµСЃС‚РІРѕ
+  `town` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL, -- РіРѕСЂРѕРґ РїСЂРѕР¶РёРІР°РЅРёСЏ
+  `country` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL, -- СЃС‚СЂР°РЅР° РїСЂРѕР¶РёРІР°РЅРёСЏ
+  `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL, -- СЌР»РµРєС‚СЂРѕРЅРЅС‹Р№ Р°РґСЂРµСЃ
+  `birthday` date DEFAULT NULL, -- РґРµРЅСЊ СЂРѕР¶РґРµРЅРёСЏ
+  `phone` int(10) unsigned NOT NULL, -- РЅРѕРјРµСЂ С‚РµР»РµС„РѕРЅР°
+  `gender` enum('M','W') COLLATE utf8_unicode_ci DEFAULT NULL,  -- РїРѕР»
+  `role` enum('ticher','student','curator') COLLATE utf8_unicode_ci DEFAULT NULL,  /* СЃС‚Р°С‚СѓСЃ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ :
+	                                                                              СѓС‡РёС‚РµР»СЊ, СѓС‡РµРЅРёРє, РєСѓСЂР°С‚РѕСЂ РіСЂСѓРїРїС‹ */
+  `groups_gb_id` int(10) unsigned NOT NULL,  -- СЃСЃС‹Р»РєР° РЅР° РіСЂСѓРїРїСѓ РІ РєРѕС‚РѕСЂРѕР№ СѓС‡РёС‚СЃСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ (РµСЃР»Рё РѕРЅ СЃС‚СѓРґРµРЅС‚)
+  `photo_id` int(10) unsigned NOT NULL, -- СЃСЃС‹Р»РєР° РЅР° С„РѕС‚Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ (media)
+  `created_at` datetime DEFAULT current_timestamp(), -- РєРѕРіРґР° СЃРѕР·РґР°РЅР° СѓС‡РµС‚РЅР°СЏ Р·Р°РїРёСЃСЊ
+  `update_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),  -- РїРѕСЃР»РµРґРЅРµРµ РёР·РјРµРЅРµРЅРёРµ РґР°РЅРЅС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+  `last_visit` datetime DEFAULT NULL, -- РїРѕСЃР»РµРґРЅРёР№ РІРёР·РёС‚ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- таблица медиа файлов на сервисе
+-- С‚Р°Р±Р»РёС†Р° РјРµРґРёР° С„Р°Р№Р»РѕРІ РЅР° СЃРµСЂРІРёСЃРµ
 
-CREATE TABLE media (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	media_type_id INT UNSIGNED NOT NULL, -- тип файла из справочника типов media_types
-	user_id INT UNSIGNED NOT NULL, -- пользователь прикрепивщий файл
-	metadata JSON, -- данные о файле в формате JSON
-	size_file INT UNSIGNED NOT NULL, -- размер файла
-	file_name VARCHAR (255), -- название файла
-	created_at DATETIME DEFAULT NOW(), -- время отправки файла
-	update_at DATETIME DEFAULT NOW() ON UPDATE NOW() -- время обновления файла
-	)
+CREATE TABLE `media` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `media_type_id` int(10) unsigned NOT NULL, -- С‚РёРї С„Р°Р№Р»Р° РёР· СЃРїСЂР°РІРѕС‡РЅРёРєР° С‚РёРїРѕРІ media_types
+  `user_id` int(10) unsigned NOT NULL,  -- РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РїСЂРёРєСЂРµРїРёРІС€РёР№ С„Р°Р№Р»
+  `metadata` JSON,  -- РґР°РЅРЅС‹Рµ Рѕ С„Р°Р№Р»Рµ РІ С„РѕСЂРјР°С‚Рµ JSON
+  `size_file` int(10) unsigned NOT NULL,  -- СЂР°Р·РјРµСЂ С„Р°Р№Р»Р°
+  `file_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,  -- РЅР°Р·РІР°РЅРёРµ С„Р°Р№Р»Р° 
+  `created_at` datetime DEFAULT current_timestamp(),  -- РІСЂРµРјСЏ РѕС‚РїСЂР°РІРєРё С„Р°Р№Р»Р°
+  `update_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(), -- РІСЂРµРјСЏ РѕР±РЅРѕРІР»РµРЅРёСЏ С„Р°Р№Р»Р°
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=501 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- таблица справочник по типам медиа файлов
+-- С‚Р°Р±Р»РёС†Р° СЃРїСЂР°РІРѕС‡РЅРёРє РїРѕ С‚РёРїР°Рј РјРµРґРёР° С„Р°Р№Р»РѕРІ
 
-CREATE TABLE media_types (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	name_media_types VARCHAR (255) NOT NULL UNIQUE-- название типа файла
-	)
-	
--- новости для студентов
+CREATE TABLE `media_types` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name_media_types` varchar(255) COLLATE utf8_unicode_ci NOT NULL, -- РЅР°Р·РІР°РЅРёРµ С‚РёРїР° С„Р°Р№Р»Р°
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_media_types` (`name_media_types`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-CREATE TABLE news (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	theme VARCHAR (255) NOT NULL, -- тема новости
-	body_id INT UNSIGNED NOT NULL, -- -- ссылка на текстовый файл (media)
-	news_media INT UNSIGNED NOT NULL, -- -- медиа файл (media)
-	autor_news INT UNSIGNED NOT NULL, -- -- ссылка на пользователя
-	created_at DATETIME DEFAULT NOW() -- дата создания/обновления
-	)
+-- РЅРѕРІРѕСЃС‚Рё РґР»СЏ СЃС‚СѓРґРµРЅС‚РѕРІ
 
--- обмен сообщениями на сервисе между участниками проекта	
+CREATE TABLE `news` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `theme` varchar(255) COLLATE utf8_unicode_ci NOT NULL, -- С‚РµРјР° РЅРѕРІРѕСЃС‚Рё
+  `body_id` int(10) unsigned NOT NULL, -- СЃСЃС‹Р»РєР° РЅР° С‚РµРєСЃС‚РѕРІС‹Р№ С„Р°Р№Р» (media)
+  `news_media` int(10) unsigned NOT NULL, -- РјРµРґРёР° С„Р°Р№Р» (media)
+  `autor_news` int(10) unsigned NOT NULL, -- СЃСЃС‹Р»РєР° РЅР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+  `created_at` datetime DEFAULT current_timestamp(), -- РґР°С‚Р° СЃРѕР·РґР°РЅРёСЏ/РѕР±РЅРѕРІР»РµРЅРёСЏ
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-CREATE TABLE messages (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	from_user_id INT UNSIGNED NOT NULL, -- автор сообщения
-	to_user_id INT UNSIGNED NOT NULL, -- адресат
-	body VARCHAR (255), -- текст сообщения
-	is_important BOOLEAN, -- статус прочтения сообщения
-	is_delivered BOOLEAN, -- статус доставки сообщения
-	created_at DATETIME DEFAULT NOW(), -- время написания сообщения
-	read_at DATETIME DEFAULT NULL, -- время прочтения сообщения
-	edited_at DATETIME DEFAULT NULL -- время последнего редактирования
-	)
+-- РѕР±РјРµРЅ СЃРѕРѕР±С‰РµРЅРёСЏРјРё РЅР° СЃРµСЂРІРёСЃРµ РјРµР¶РґСѓ СѓС‡Р°СЃС‚РЅРёРєР°РјРё РїСЂРѕРµРєС‚Р°	
 
--- таблица для фиксации прохождения урока учеником и деталей урока
+CREATE TABLE `messages` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `from_user_id` int(10) unsigned NOT NULL, -- Р°РІС‚РѕСЂ СЃРѕРѕР±С‰РµРЅРёСЏ
+  `to_user_id` int(10) unsigned NOT NULL,  -- Р°РґСЂРµСЃР°С‚
+  `body` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL, -- С‚РµРєСЃС‚ СЃРѕРѕР±С‰РµРЅРёСЏ
+  `is_important` tinyint(1) DEFAULT NULL, -- СЃС‚Р°С‚СѓСЃ РїСЂРѕС‡С‚РµРЅРёСЏ СЃРѕРѕР±С‰РµРЅРёСЏ
+  `is_delivered` tinyint(1) DEFAULT NULL, -- СЃС‚Р°С‚СѓСЃ РґРѕСЃС‚Р°РІРєРё СЃРѕРѕР±С‰РµРЅРёСЏ
+  `created_at` datetime DEFAULT current_timestamp(), -- РІСЂРµРјСЏ РЅР°РїРёСЃР°РЅРёСЏ СЃРѕРѕР±С‰РµРЅРёСЏ
+  `read_at` datetime DEFAULT NULL, -- РІСЂРµРјСЏ РїСЂРѕС‡С‚РµРЅРёСЏ СЃРѕРѕР±С‰РµРЅРёСЏ
+  `edited_at` datetime DEFAULT NULL, -- РІСЂРµРјСЏ РїРѕСЃР»РµРґРЅРµРіРѕ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-CREATE TABLE actions_students (
-	user_id INT UNSIGNED NOT NULL, -- ссылка на пользователя
-	lesson_id INT UNSIGNED NOT NULL, -- ссылка к лекции
-	comments_lesson VARCHAR (255), -- комментарии к лекции
-	comments_practice VARCHAR (255), -- комментарии к заданию
-	assessment TINYINT NULL,  -- оценка студенту
-	teacher_id INT UNSIGNED NOT NULL, -- кто оценивал задание
-	media_id INT UNSIGNED NOT NULL, -- прикрепленный файл к заданию
-	lesson_end DATETIME DEFAULT NOW(), -- время сдачи задания
-	PRIMARY KEY (lesson_id, user_id)
-	)
+-- С‚Р°Р±Р»РёС†Р° РґР»СЏ С„РёРєСЃР°С†РёРё РїСЂРѕС…РѕР¶РґРµРЅРёСЏ СѓСЂРѕРєР° СѓС‡РµРЅРёРєРѕРј Рё РґРµС‚Р°Р»РµР№ СѓСЂРѕРєР°
+
+CREATE TABLE `actions_students` (
+  `user_id` int(10) unsigned NOT NULL, -- СЃСЃС‹Р»РєР° РЅР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+  `lesson_id` int(10) unsigned NOT NULL, -- СЃСЃС‹Р»РєР° Рє Р»РµРєС†РёРё
+  `comments_lesson` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,  -- РєРѕРјРјРµРЅС‚Р°СЂРёРё Рє Р»РµРєС†РёРё
+  `comments_practice` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,  -- РєРѕРјРјРµРЅС‚Р°СЂРёРё Рє Р·Р°РґР°РЅРёСЋ
+  `assessment` tinyint(1) unsigned DEFAULT NULL, -- РѕС†РµРЅРєР° СЃС‚СѓРґРµРЅС‚Сѓ
+  `teacher_id` int(10) unsigned NOT NULL, -- РєС‚Рѕ РѕС†РµРЅРёРІР°Р» Р·Р°РґР°РЅРёРµ
+  `media_id` int(10) unsigned NOT NULL,  -- РїСЂРёРєСЂРµРїР»РµРЅРЅС‹Р№ С„Р°Р№Р» Рє Р·Р°РґР°РЅРёСЋ
+  `lesson_end` datetime DEFAULT current_timestamp(),  -- РІСЂРµРјСЏ СЃРґР°С‡Рё Р·Р°РґР°РЅРёСЏ
+  PRIMARY KEY (`lesson_id`,`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
--- Добавляем внешние ключи
+-- Р”РѕР±Р°РІР»СЏРµРј РІРЅРµС€РЅРёРµ РєР»СЋС‡Рё
 
 ALTER TABLE users
   ADD CONSTRAINT users_groups_gb_id_fk 
@@ -162,9 +173,9 @@ ALTER TABLE media
     FOREIGN KEY (user_id) REFERENCES users(id);
 
    
-ALTER TABLE lesson 
+ALTER TABLE lessons 
   ADD CONSTRAINT lesson_course_id_fk 
-    FOREIGN KEY (course_id) REFERENCES course(id),
+    FOREIGN KEY (course_id) REFERENCES courses(id),
   ADD CONSTRAINT lesson_video_id_fk 
     FOREIGN KEY (video_id) REFERENCES media(id),
   ADD CONSTRAINT lesson_description_id_fk 
@@ -172,35 +183,36 @@ ALTER TABLE lesson
   ADD CONSTRAINT lesson_doc_id_fk 
     FOREIGN KEY (doc_id) REFERENCES media(id);
 
-
-ALTER TABLE faculty
-  ADD CONSTRAINT faculty_icon_faculty_id_fk 
-    FOREIGN KEY (icon_faculty_id) REFERENCES media(id);
-   
+select * from faculties; 
+ALTER TABLE faculties
+  ADD CONSTRAINT faculty_icon_id_fk 
+    FOREIGN KEY (icon_id) REFERENCES media(id),
+  add constraint faculty_description_id_fk
+    foreign key (description_id) references media(id);
    
 ALTER TABLE groups_gb
   ADD CONSTRAINT groups_gb_course_id_fk 
-    FOREIGN KEY (course_id) REFERENCES course(id),
+    FOREIGN KEY (course_id) REFERENCES courses(id),
   ADD CONSTRAINT groups_gb_curator_id_fk 
     FOREIGN KEY (curator_id) REFERENCES users(id);
+
    
-   
-ALTER TABLE course 
-  ADD CONSTRAINT course_faculty_id_fk 
-    FOREIGN KEY (faculty_id) REFERENCES faculty(id),
-  ADD CONSTRAINT course_description_course_id_fk 
-    FOREIGN KEY (description_course_id) REFERENCES media(id),
+ALTER TABLE courses 
+  ADD CONSTRAINT courses_faculties_id_fk 
+    FOREIGN KEY (faculty_id) REFERENCES faculties(id),
+  ADD CONSTRAINT courses_description_courses_id_fk 
+    FOREIGN KEY (description_id) REFERENCES media(id),
   ADD CONSTRAINT course_teacher_id_fk 
     FOREIGN KEY (teacher_id) REFERENCES users(id),
-  ADD CONSTRAINT course_icon_course_id_fk 
-    FOREIGN KEY (icon_course_id) REFERENCES media(id);
+  ADD CONSTRAINT course_icon_courses_id_fk 
+    FOREIGN KEY (icon_id) REFERENCES media(id);
 
 
 ALTER TABLE actions_students 
   ADD CONSTRAINT action_students_user_id_fk 
     FOREIGN KEY (user_id) REFERENCES users(id),
   ADD CONSTRAINT action_students_lesson_id_fk 
-    FOREIGN KEY (lesson_id) REFERENCES lesson(id),
+    FOREIGN KEY (lesson_id) REFERENCES lessons(id),
   ADD CONSTRAINT action_teacher_id_fk 
     FOREIGN KEY (teacher_id) REFERENCES users(id),
   ADD CONSTRAINT action_students_media_id_fk 
